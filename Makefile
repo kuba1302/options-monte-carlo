@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-I include -I $(VCPKG_ROOT)/installed/x64-linux/include -std=c++20 -Wall
+CFLAGS=-I include -I $(VCPKG_ROOT)/installed/arm64-osx/include -std=c++20 -Wall
 LDFLAGS=-L $(VCPKG_ROOT)/installed/x64-linux/lib
 
 TARGET=main
