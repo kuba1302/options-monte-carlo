@@ -1,6 +1,6 @@
 CC=g++
-CFLAGS=-I include -I $(VCPKG_ROOT)/installed/arm64-osx/include -std=c++20 -Wall
-LDFLAGS=-L $(VCPKG_ROOT)/installed/x64-linux/lib
+CFLAGS=-I include -I $(VCPKG_ROOT)/installed/arm64-osx/include  -std=c++20 -Wall
+LDFLAGS=-L $(VCPKG_ROOT)/installed/arm64-osx/lib -lfmt -lspdlog
 
 TARGET=main
 
@@ -22,4 +22,11 @@ $(shell mkdir -p $(OBJDIR))
 clean:
 	rm -f $(OBJDIR)/*.o $(TARGET)
 
-.PHONY: all clean
+rebuild: clean all
+
+run: $(TARGET)
+	./$(TARGET)
+
+rebuild-run: rebuild run
+
+.PHONY: all clean rebuild run rebuild-run

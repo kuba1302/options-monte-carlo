@@ -10,7 +10,7 @@ class UpAndInCallPayoff : public Payoff {
 
  public:
   UpAndInCallPayoff(double StrikePrice, double B);
-  virtual double operator()(double spot) const = 0;
+  double operator()(double spot) const override;
 };
 
 #endif

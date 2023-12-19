@@ -4,7 +4,9 @@
 #define GAUSSIAN_BY_BOX_MUELLER_RNG_H
 
 class GaussianByBoxMuellerRNG : public RandomNumberGeneratorBase {
-  virtual double generate() = 0;
+ public:
+  ~GaussianByBoxMuellerRNG() = default;
+  double generate();
 };
 
 #endif

@@ -1,12 +1,11 @@
-#include <spdlog>
+#include <spdlog/spdlog.h>
 
 #include "GaussianByBoxMuellerRNG.h"
 #include "MonteCarloPricer.h"
 #include "OptionParams.h"
-#include "Payoff.h"
 #include "UpAndInCallPayoff.h"
 
-void main() {
+int main() {
   OptionParams params = OptionParams(140, 150, 0.24, 0.07, 0.75, 160);
   GaussianByBoxMuellerRNG rng = GaussianByBoxMuellerRNG();
   UpAndInCallPayoff payoff =
@@ -17,3 +16,4 @@ void main() {
                        params.InterestRate, params.TimeToMaturity, 10000);
   double price = pricer.calculate();
   spdlog::info("Price: {}", price);
+}

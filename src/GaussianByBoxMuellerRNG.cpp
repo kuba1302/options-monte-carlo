@@ -3,7 +3,6 @@
 #include <cmath>
 #include <cstdlib>
 
-#include "RandomNumberGeneratorBase.h"
 double GaussianByBoxMuellerRNG ::generate() {
   // Implementation taken from
   // https://github.com/pawelsakowski/AF-RCPP-2023-2024/blob/main/packages/optionPricer2/src/getOneGaussianByBoxMueller.cpp

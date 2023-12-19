@@ -1,7 +1,8 @@
 #include "MonteCarloPricer.h"
 
+#include <spdlog/spdlog.h>
+
 #include <cmath>
-#include <spdlog>
 
 MonteCarloPricer::MonteCarloPricer(
     std::unique_ptr<Payoff> payoff,

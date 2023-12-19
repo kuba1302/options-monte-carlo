@@ -19,9 +19,9 @@ class MonteCarloPricer {
                    std::unique_ptr<RandomNumberGeneratorBase> rng,
                    double InterestRate, double TimeToMaturity,
                    int numSimulations);
-  virtual ~MonteCarloPricer() = default;
+  ~MonteCarloPricer() = default;
 
-  virtual double calculate() const = 0;
+  double calculate() const;
 };
 
 #endif
