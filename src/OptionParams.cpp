@@ -1,13 +1,11 @@
 #include "OptionParams.h"
 
-class OptionParams {
- public:
-  double S0;
-  double K;
-  double sigma;
-  double r;
-  double T;
-  double B;
-
-  OptionParams(double S0, double K, double sigma, double r, double T, double B);
-};
+OptionParams::OptionParams(double InitialPriceOfAsset, double StrikePrice,
+                           double Volatility, double InterestRate,
+                           double TimeToMaturity, double BarrierLevel)
+    : InitialPriceOfAsset(InitialPriceOfAsset),
+      StrikePrice(StrikePrice),
+      Volatility(Volatility),
+      InterestRate(InterestRate),
+      TimeToMaturity(TimeToMaturity),
+      BarrierLevel(BarrierLevel){};
