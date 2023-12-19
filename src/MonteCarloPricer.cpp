@@ -12,6 +12,26 @@ MonteCarloPricer::MonteCarloPricer(
       rng(std::move(rng)),
       params(std::move(params)) {}
 
+std::pair<bool, double> MonteCarloPricer::simulatePricePath(int numTimeSteps,
+                                                            double dt) const {
+  double spot = params->InitialPriceOfAsset;
+  bool barrierBreached = false;
+
+  for (int j = 0; j < numTimeSteps; ++j) {
+    double gauss_bm = rng->generate();
+    spot *= exp(
+        (params->InterestRate - 0.5 * params->Volatility * params->Volatility) *
+            dt +
+        params->Volatility * gauss_bm * sqrt(dt));
+
+    if (spot >= params->BarrierLevel) {
+      barrierBreached = true;
+    }
+  }
+
+  return {barrierBreached, spot};
+}
+
 double MonteCarloPricer::calculate(int numSimulations, int numTimeSteps) const {
   double discountFactor =
       std::exp(-params->InterestRate * params->TimeToMaturity);
@@ -19,20 +39,7 @@ double MonteCarloPricer::calculate(int numSimulations, int numTimeSteps) const {
   double dt = params->TimeToMaturity / numTimeSteps;
 
   for (int i = 0; i < numSimulations; ++i) {
-    double spot = params->InitialPriceOfAsset;
-    bool barrierBreached = false;
-
-    for (int j = 0; j < numTimeSteps; ++j) {
-      double gauss_bm = rng->generate();
-      spot *= exp((params->InterestRate -
-                   0.5 * params->Volatility * params->Volatility) *
-                      dt +
-                  params->Volatility * gauss_bm * sqrt(dt));
-
-      if (spot >= params->BarrierLevel) {
-        barrierBreached = true;
-      }
-    }
+    auto [barrierBreached, spot] = simulatePricePath(numTimeSteps, dt);
 
     double payoffResult = 0.0;
     if (barrierBreached) {

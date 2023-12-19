@@ -19,6 +19,7 @@ class MonteCarloPricer {
   ~MonteCarloPricer() = default;
 
   double calculate(int numSimulations, int numTimeSteps) const;
+  std::pair<bool, double> simulatePricePath(int numTimeSteps, double dt) const;
 };
 
 #endif
