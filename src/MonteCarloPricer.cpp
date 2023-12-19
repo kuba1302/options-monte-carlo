@@ -6,24 +6,38 @@
 
 MonteCarloPricer::MonteCarloPricer(
     std::unique_ptr<Payoff> payoff,
-    std::unique_ptr<RandomNumberGeneratorBase> rng, double InterestRate,
-    double timeToMaturity, int numSimulations)
+    std::unique_ptr<RandomNumberGeneratorBase> rng,
+    std::unique_ptr<OptionParams> params)
     : payoff(std::move(payoff)),
       rng(std::move(rng)),
-      InterestRate(InterestRate),
-      TimeToMaturity(timeToMaturity),
-      numSimulations(numSimulations) {}
+      params(std::move(params)) {}
 
-double MonteCarloPricer::calculate() const {
-  double discountFactor = std::exp(-InterestRate * TimeToMaturity);
+double MonteCarloPricer::calculate(int numSimulations, int numTimeSteps) const {
+  double discountFactor =
+      std::exp(-params->InterestRate * params->TimeToMaturity);
   double sumPayoffs = 0.0;
+  double dt = params->TimeToMaturity / numTimeSteps;
 
   for (int i = 0; i < numSimulations; ++i) {
-    if (i % 1000 == 0) {
-      spdlog::info("Simulation: {}", i);
+    double spot = params->InitialPriceOfAsset;
+    bool barrierBreached = false;
+
+    for (int j = 0; j < numTimeSteps; ++j) {
+      double gauss_bm = rng->generate();
+      spot *= exp((params->InterestRate -
+                   0.5 * params->Volatility * params->Volatility) *
+                      dt +
+                  params->Volatility * gauss_bm * sqrt(dt));
+
+      if (spot >= params->BarrierLevel) {
+        barrierBreached = true;
+      }
     }
-    double spot = rng->generate();
-    double payoffResult = (*payoff)(spot);
+
+    double payoffResult = 0.0;
+    if (barrierBreached) {
+      payoffResult = (*payoff)(spot);
+    }
     sumPayoffs += payoffResult;
   }
 
