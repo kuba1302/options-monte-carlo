@@ -19,6 +19,7 @@ std::pair<bool, double> MonteCarloPricer::simulatePricePath(int numTimeSteps,
 
   for (int j = 0; j < numTimeSteps; ++j) {
     double gauss_bm = rng->generate();
+    // Use geometric brownian motion to simulate the price path
     spot *= exp(
         (params->InterestRate - 0.5 * params->Volatility * params->Volatility) *
             dt +
