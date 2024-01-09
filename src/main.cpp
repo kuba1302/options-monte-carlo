@@ -1,4 +1,4 @@
-#include <spdlog/spdlog.h>
+#include <iostream>
 
 #include "GaussianByBoxMuellerRNG.h"
 #include "MonteCarloPricer.h"
@@ -17,5 +17,5 @@ int main() {
   int numTimeSteps = 100;
 
   double price = pricer.calculate(numSimulations, numTimeSteps);
-  spdlog::info("Price: {}", price);
+  std::cout << "Price: " << price << '\n';
 }
