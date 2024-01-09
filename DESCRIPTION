@@ -1,0 +1,11 @@
+Package: OptionMonteCarlo
+Type: Package
+Title: Monte Carlo Simulation Methods for Option Pricing
+Version: 1.0
+Date: 2024-01-09
+Author: Jakub Wujec
+Maintainer: Jakub Wujec <kuba1302@gmail.com>
+Description: This package provides tools for pricing financial derivatives, particularly options, using Monte Carlo simulation methods. It enables users to compute prices for various types of options under different market conditions, focusing on accuracy and computational efficiency.
+License: GPL (>= 2)
+Imports: Rcpp (>= 1.0.5)
+LinkingTo: Rcpp

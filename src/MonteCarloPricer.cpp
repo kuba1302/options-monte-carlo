@@ -1,7 +1,5 @@
 #include "MonteCarloPricer.h"
 
-#include <spdlog/spdlog.h>
-
 #include <cmath>
 
 MonteCarloPricer::MonteCarloPricer(

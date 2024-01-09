@@ -31,3 +31,6 @@
 *.out
 *.app
 .vscode
+
+OptionMonteCarlo.Rcheck/
+.DS_STORE
