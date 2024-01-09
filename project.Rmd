@@ -1,0 +1,64 @@
+---
+title: "Up-and-in-call Option Pricing Analysis with Monte Carlo Simulation"
+author: "Jakub Wujec"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Objective
+
+The objective of this project is to analyze the pricing of a European style up-and-in call option using Monte Carlo simulations. We will investigate how the theoretical price of the option is influenced by the volatility of the underlying instrument's returns and the time to maturity.
+
+## Assumptions
+
+We assume the following dynamics for the underlying asset's price and the option characteristics:
+- Price of the underlying at the moment of option pricing (\$S_0\$): 140
+- Strike price (\$K\$): 150
+- Annualized volatility rate (\$\sigma\$): 0.24
+- Annualized risk-free rate (\$r\$): 0.07
+- Time to maturity (\$t\$): 0.75
+
+The number of iterations in the Monte Carlo simulation and other computational parameters will be chosen to balance accuracy and computation time.
+
+## Option Description
+
+We are considering a European style up-and-in call option. This option type only becomes active (i.e., "knocks in") if the underlying asset's price hits a certain barrier level before expiry. The barrier level is set to a reasonable value that slightly influences the price of the corresponding non-barrier option.
+
+```{r setup, include=FALSE}
+library(OptionMonteCarlo)  # Load the OptionMonteCarlo package
+
+# Set parameters
+S0 <- 140
+K <- 150
+sigma <- 0.24
+r <- 0.07
+t <- 0.75
+barrier <- 145  # Example barrier level
+
+# Calculate option price
+optionPrice <- OptionMonteCarlo::getUpAndInCallPrice(S0, K, sigma, r, t, barrier)
+
+# Create a range of volatilities and times to maturity
+volRange <- seq(0.1, 0.4, by = 0.01)
+timeRange <- seq(0.1, 1.5, by = 0.1)
+
+# Prepare a grid for plotting
+plotGrid <- expand.grid(volatility = volRange, timeToMaturity = timeRange)
+plotGrid$price <- apply(plotGrid, 1, function(x) getUpAndInCallPrice(S0, K, x['volatility'], r, x['timeToMaturity'], barrier))
+
+# Plot
+library(ggplot2)
+ggplot(plotGrid, aes(x = volatility, y = timeToMaturity, fill = price)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "yellow", midpoint = median(plotGrid$price)) +
+  labs(title = "Option Price Relation to Volatility and Time to Maturity",
+       x = "Volatility",
+       y = "Time to Maturity",
+       fill = "Option Price")
+
+```
+
+
+## Conclusion
+This analysis demonstrates the sensitivity of option pricing to key parameters under the Monte Carlo simulation framework. It provides valuable insights for option traders and financial analysts.
+

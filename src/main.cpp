@@ -9,6 +9,7 @@
 
 using namespace Rcpp;
 
+// [[Rcpp::export]]
 double getUpAndInCallPrice(double InitialPriceOfAsset, double StrikePrice,
                            double Volatility, double InterestRate,
                            double TimeToMaturity, double BarrierLevel,
