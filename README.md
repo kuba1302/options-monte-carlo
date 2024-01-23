@@ -32,14 +32,14 @@ print(optionPrice)
 
 ```
 
-## Makefile
-To make cpp development easier, Makefile was utilized.
-Take into account, that it is specific to mac os.
+## Makefile for Streamlined C++ Development
+
+To simplify and enhance the C++ development process, a tailored Makefile is included in this package. The Makefile is designed to be macOS-specific and streamlines various build steps. Here's how you can leverage the Makefile commands:
 
 ```
-make all: Compiles the full program.
-make clean: Removes object files and the main target.
-make rebuild: Cleans and then compiles the program.
-make run: Executes the compiled program.
-make rebuild-run: Rebuilds and runs the program in one step.
+make all: Executes the complete compilation process for the program.
+make clean: Clears out all the object files and the final compiled binary, keeping your workspace tidy.
+make rebuild: Performs a clean slate build by first removing previous compilations and then generating fresh binaries.
+make run: Directly runs the compiled binary, allowing for immediate testing of the program.
+make rebuild-run: Combines cleaning, building, and running steps into a single command for efficient iteration cycles.
 ```
