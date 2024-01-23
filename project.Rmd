@@ -7,50 +7,60 @@ output: html_document
 
 ## Objective
 
-The objective of this project is to analyze the pricing of a European style up-and-in call option using Monte Carlo simulations. We will investigate how the theoretical price of the option is influenced by the volatility of the underlying instrument's returns and the time to maturity.
+The objective of this project is to analyze the pricing of a European style up-and-in call option using Monte Carlo simulations. I will investigate how the theoretical price of the option is influenced by the volatility of the underlying instrument's returns and the time to maturity. It will be done using written from scratch rpp library.
 
 ## Assumptions
 
-We assume the following dynamics for the underlying asset's price and the option characteristics:
-- Price of the underlying at the moment of option pricing (\$S_0\$): 140
-- Strike price (\$K\$): 150
-- Annualized volatility rate (\$\sigma\$): 0.24
-- Annualized risk-free rate (\$r\$): 0.07
-- Time to maturity (\$t\$): 0.75
+We assume the following dynamics for the underlying asset's price and the option characteristics:  
+- Price of the underlying at the moment of option pricing: 140     
+- Strike price: 150   
+- Annualized volatility rate: 0.24    
+- Annualized risk-free rate: 0.07   
+- Time to maturity: 0.75    
+- Number simulations: 10000   
+- Number of time steps while simulating price: 100    
 
-The number of iterations in the Monte Carlo simulation and other computational parameters will be chosen to balance accuracy and computation time.
 
 ## Option Description
 
 We are considering a European style up-and-in call option. This option type only becomes active (i.e., "knocks in") if the underlying asset's price hits a certain barrier level before expiry. The barrier level is set to a reasonable value that slightly influences the price of the corresponding non-barrier option.
 
-```{r setup, include=FALSE}
-library(OptionMonteCarlo)  # Load the OptionMonteCarlo package
+```{r ggplot}
+library(OptionMonteCarlo)
+library(ggplot2)
 
-# Set parameters
 S0 <- 140
 K <- 150
 sigma <- 0.24
 r <- 0.07
 t <- 0.75
-barrier <- 145  # Example barrier level
+barrier <- 145
+numSimulations <- 10000
+numTimeSteps <- 100
 
-# Calculate option price
-optionPrice <- OptionMonteCarlo::getUpAndInCallPrice(S0, K, sigma, r, t, barrier)
+optionPrice <-
+  OptionMonteCarlo::getUpAndInCallPrice(S0, K, sigma, r, t, barrier, numSimulations, numTimeSteps)
 
-# Create a range of volatilities and times to maturity
+
 volRange <- seq(0.1, 0.4, by = 0.01)
 timeRange <- seq(0.1, 1.5, by = 0.1)
 
-# Prepare a grid for plotting
-plotGrid <- expand.grid(volatility = volRange, timeToMaturity = timeRange)
-plotGrid$price <- apply(plotGrid, 1, function(x) getUpAndInCallPrice(S0, K, x['volatility'], r, x['timeToMaturity'], barrier))
 
-# Plot
-library(ggplot2)
+plotGrid <-
+  expand.grid(volatility = volRange, timeToMaturity = timeRange)
+plotGrid$price <-
+  apply(plotGrid, 1, function(x)
+    getUpAndInCallPrice(S0, K, x['volatility'], r, x['timeToMaturity'], barrier, numSimulations, numTimeSteps))
+
+
 ggplot(plotGrid, aes(x = volatility, y = timeToMaturity, fill = price)) +
   geom_tile() +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "yellow", midpoint = median(plotGrid$price)) +
+  scale_fill_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "yellow",
+    midpoint = median(plotGrid$price)
+  ) +
   labs(title = "Option Price Relation to Volatility and Time to Maturity",
        x = "Volatility",
        y = "Time to Maturity",
@@ -60,5 +70,9 @@ ggplot(plotGrid, aes(x = volatility, y = timeToMaturity, fill = price)) +
 
 
 ## Conclusion
-This analysis demonstrates the sensitivity of option pricing to key parameters under the Monte Carlo simulation framework. It provides valuable insights for option traders and financial analysts.
+The analysis confirms the positive correlation between volatility and option price; higher volatility increases the potential for the option to activate and become valuable. The option value also rises with time to maturity, indicating the increased probability of the barrier being breached.
 
+
+## Declaration
+In accordance with the Honor Code, I certify that my answers here are my own work, and I
+did not make my solutions available to anyone else.
