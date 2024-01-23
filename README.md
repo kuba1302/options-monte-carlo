@@ -31,3 +31,15 @@ optionPrice <- getUpAndInCallPrice(S0, K, sigma, r, t, barrier, numSimulations, 
 print(optionPrice)
 
 ```
+
+## Makefile
+To make cpp development easier, Makefile was utilized.
+Take into account, that it is specific to mac os.
+
+```
+make all: Compiles the full program.
+make clean: Removes object files and the main target.
+make rebuild: Cleans and then compiles the program.
+make run: Executes the compiled program.
+make rebuild-run: Rebuilds and runs the program in one step.
+```
